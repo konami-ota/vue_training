@@ -1,55 +1,36 @@
 <template>
-  <div class="list">
-    <button @click="$emit('openItemForm', device)">新規作成</button>
-    <table id="table">
-      <tr>
-        <thead>
-          <tr>
-            <th>名前</th>
-            <th>性別</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in UESRS" :key="user.id">
-            <td>
-              {{ user.name }}
-            </td>
-            <td>
-              {{ user.gender }}
-            </td>
-          </tr>
-        </tbody>
-      </tr>
-    </table>
-  </div>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn v-bind="attrs" v-on="on" @click="$emit('openItemForm')">
+          Open Dialog
+        </v-btn>
+      </template>
+    </v-dialog>
+    <v-card>
+      <v-data-table
+        :headers="HEADERS"
+        :items="UESRS"
+        hide-default-footer
+        class="elevation-1"
+      ></v-data-table>
+    </v-card>
+  </v-row>
 </template>
-<style scoped>
-.list {
-  text-align: center;
-}
-.list * {
-  margin-right: auto;
-  margin-left: auto;
-}
-#table {
-  border-collapse: collapse;
-  line-height: 1.5;
-}
-tr:nth-child(1) th {
-  background-color: #ddd;
-}
-
-th,
-td {
-  padding: 5px 10px;
-  border-bottom: 1px solid black;
-}
-</style>
+<style scoped></style>
 <script>
 export default {
   components: {},
   data() {
     return {
+      dialog: false,
+      HEADERS: [
+        {
+          text: "名前",
+          value: "name",
+        },
+        { text: "性別", value: "gender" },
+      ],
       UESRS: [
         {
           id: 1,

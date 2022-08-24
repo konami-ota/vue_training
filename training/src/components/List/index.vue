@@ -8,74 +8,36 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="text-h5">User Profile</span>
+          <span class="text-h5">新規作成</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
+                  v-model="newName"
+                  label="名前"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
                 <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
+                  v-model="newGender"
+                  :items="gender"
+                  label="性別"
                   required
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="[
-                    'Skiing',
-                    'Ice hockey',
-                    'Soccer',
-                    'Basketball',
-                    'Hockey',
-                    'Reading',
-                    'Writing',
-                    'Coding',
-                    'Basejump',
-                  ]"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
+              <pre>{{ $data }}</pre>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="dialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
-          </v-btn>
+          <v-btn color="blue darken-1" text @click="addUser()"> Save </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -83,11 +45,24 @@
     <v-card>
       <v-data-table
         :headers="HEADERS"
-        :items="USER"
+        :items="users"
         hide-default-footer
         class="elevation-1"
         @click:row="editItem"
-      ></v-data-table>
+      >
+        <template>
+          <v-btn
+            class="mx-2"
+            fab
+            dark
+            x-small
+            color="error"
+            @click="deleteTask(item)"
+          >
+            <v-icon dark>mdi-minus</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
     </v-card>
   </v-row>
 </template>
@@ -111,13 +86,33 @@ export default {
         },
         { text: "性別", value: "gender" },
       ],
-      USER,
+      gender: ["男", "女"],
+      users: USER,
+      newName: "",
+      newGender: "",
     };
   },
   methods: {
-    editItem: function (item) {
-      const selected = this.items.indexOf(item);
-      alert(selected + 1 + "行目をクリックしました。");
+    editItem(users) {
+      console.log(users);
+    },
+
+    addUser: function () {
+      console.log(this.newName);
+      // let url = new URL("../../assets/USER.js");
+      // fetch(url, {
+      //   method: "POST",
+      //   id: Number(Date.now()).toString(16),
+      //   name: this.newName,
+      //   gender: this.newGender,
+      // })
+      //   .then((response) => {
+      //     this.statusPost = response.status;
+      //     return response.json();
+      //   })
+      //   .then((data) => {
+      //     this.resPost = data;
+      //   });
     },
   },
 };
